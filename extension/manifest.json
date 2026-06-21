@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Fluxi Controller",
   "version": "1.0.0",
-  "description": "Controlla Fluxi — invia URL al display remoto in tempo reale",
+  "description": "Control Fluxi — send URLs to the remote display in real time",
   "permissions": [
     "tabs",
     "storage"

@@ -86,7 +86,7 @@ sendTabBtn.addEventListener('click', async function () {
       doSend(tabUrl);
     }
   } catch (e) {
-    setStatus('Errore: ' + e.message, true);
+    setStatus('Error: ' + e.message, true);
   }
 });
 
