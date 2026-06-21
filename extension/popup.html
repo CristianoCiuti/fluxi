@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxi</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Fluxi</h1>
+
+    <label>
+      Server URL
+      <input type="url" id="serverUrl" placeholder="https://fluxi.local:3000">
+    </label>
+
+    <label>
+      API Key
+      <input type="password" id="apiKey" placeholder="••••••••••••••••">
+    </label>
+
+    <label>
+      URL
+      <div class="url-row">
+        <input type="url" id="url" placeholder="https://example.com">
+        <button id="useTabBtn" title="Usa URL scheda attiva">Tab</button>
+      </div>
+    </label>
+
+    <button id="sendBtn" disabled>Send</button>
+
+    <p id="status"></p>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

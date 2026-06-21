@@ -1,0 +1,12 @@
+{
+  "name": "fluxi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live URL switcher — self-hosted on Raspberry Pi",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

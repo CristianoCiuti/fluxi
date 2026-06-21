@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+current-url.json
+.git
+*.md
+.gitignore
+.env*
+ta
+extension

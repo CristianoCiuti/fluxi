@@ -1,0 +1,5 @@
+node_modules/
+current-url.json
+.env
+*.log
+.DS_Store

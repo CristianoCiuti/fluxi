@@ -1,0 +1,12 @@
+services:
+  fluxi:
+    build: .
+    container_name: fluxi
+    ports:
+      - "3000:3000"
+    environment:
+      - FLUXI_API_KEY=${FLUXI_API_KEY}
+      - FLUXI_CORS_ORIGINS=${FLUXI_CORS_ORIGINS:-*}
+    volumes:
+      - ./backend/current-url.json:/app/current-url.json
+    restart: unless-stopped
