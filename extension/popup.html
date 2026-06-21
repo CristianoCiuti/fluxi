@@ -8,7 +8,11 @@
 </head>
 <body>
   <div class="container">
-    <h1>Fluxi</h1>
+    <div class="header">
+      <img src="icons/icon16.png" class="logo">
+      <h1>Fluxi</h1>
+      <span class="header-version">v1.0</span>
+    </div>
 
     <label>
       Server URL
@@ -24,11 +28,17 @@
       URL
       <div class="url-row">
         <input type="url" id="url" placeholder="https://example.com">
-        <button id="sendTabBtn" disabled>Send Tab</button>
+        <button id="sendTabBtn" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Send Tab
+        </button>
       </div>
     </label>
 
-    <button id="sendBtn" disabled>Send</button>
+    <button id="sendBtn" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Send
+    </button>
 
     <p id="status"></p>
   </div>
