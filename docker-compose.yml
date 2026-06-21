@@ -8,5 +8,5 @@ services:
       - FLUXI_API_KEY=${FLUXI_API_KEY}
       - FLUXI_CORS_ORIGINS=${FLUXI_CORS_ORIGINS:-*}
     volumes:
-      - ./backend/current-url.json:/app/current-url.json
+      - ./backend/data:/app/data
     restart: unless-stopped

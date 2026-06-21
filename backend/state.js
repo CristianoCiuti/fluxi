@@ -1,7 +1,8 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const STATE_FILE = path.join(__dirname, 'current-url.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const STATE_FILE = path.join(DATA_DIR, 'current-url.json');
 const TEMP_FILE = STATE_FILE + '.tmp';
 
 const DEFAULT_STATE = {
@@ -36,9 +37,13 @@ async function read() {
 
 async function write(url) {
   const state = { url, updatedAt: new Date().toISOString() };
-  const data = JSON.stringify(state, null, 2);
-  await fs.writeFile(TEMP_FILE, data, 'utf-8');
-  await fs.rename(TEMP_FILE, STATE_FILE);
+  const json = JSON.stringify(state, null, 2);
+  try {
+    await fs.writeFile(TEMP_FILE, json, 'utf-8');
+    await fs.rename(TEMP_FILE, STATE_FILE);
+  } catch {
+    await fs.writeFile(STATE_FILE, json, 'utf-8');
+  }
   currentState = state;
   return state;
 }
