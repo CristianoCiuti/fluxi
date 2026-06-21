@@ -2,8 +2,8 @@ var serverUrlEl = document.getElementById('serverUrl');
 var apiKeyEl = document.getElementById('apiKey');
 var urlEl = document.getElementById('url');
 var sendBtn = document.getElementById('sendBtn');
+var sendTabBtn = document.getElementById('sendTabBtn');
 var statusEl = document.getElementById('status');
-var useTabBtn = document.getElementById('useTabBtn');
 
 var saveTimer = null;
 
@@ -25,7 +25,9 @@ apiKeyEl.addEventListener('input', onSettingChange);
 urlEl.addEventListener('input', updateSendBtn);
 
 function updateSendBtn() {
-  sendBtn.disabled = !serverUrlEl.value || !apiKeyEl.value || !urlEl.value;
+  var disabled = !serverUrlEl.value || !apiKeyEl.value;
+  sendBtn.disabled = disabled || !urlEl.value;
+  sendTabBtn.disabled = disabled;
 }
 
 function setStatus(msg, isError) {
@@ -33,24 +35,12 @@ function setStatus(msg, isError) {
   statusEl.style.color = isError ? '#e94560' : '#4ecca3';
 }
 
-useTabBtn.addEventListener('click', async function () {
-  try {
-    var tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tabs.length > 0) {
-      urlEl.value = tabs[0].url;
-      updateSendBtn();
-    }
-  } catch (e) {
-    setStatus('Errore: ' + e.message, true);
-  }
-});
-
-sendBtn.addEventListener('click', async function () {
+async function doSend(url) {
   var serverUrl = serverUrlEl.value.replace(/\/+$/, '');
   var apiKey = apiKeyEl.value;
-  var url = urlEl.value;
 
   sendBtn.disabled = true;
+  sendTabBtn.disabled = true;
   setStatus('⏳ Sending...');
 
   try {
@@ -76,8 +66,26 @@ sendBtn.addEventListener('click', async function () {
 
   setTimeout(function () {
     sendBtn.disabled = false;
+    sendTabBtn.disabled = false;
     updateSendBtn();
   }, 1500);
+}
+
+sendTabBtn.addEventListener('click', async function () {
+  try {
+    var tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tabs.length > 0) {
+      var tabUrl = tabs[0].url;
+      urlEl.value = tabUrl;
+      doSend(tabUrl);
+    }
+  } catch (e) {
+    setStatus('Errore: ' + e.message, true);
+  }
+});
+
+sendBtn.addEventListener('click', function () {
+  doSend(urlEl.value);
 });
 
 chrome.storage.local.get(['serverUrl', 'apiKey'], function (result) {
