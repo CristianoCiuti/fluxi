@@ -1,3 +1,17 @@
+var STORAGE_KEY = 'fluxi';
+
+function loadSaved() {
+  try {
+    return JSON.parse(localStorage[STORAGE_KEY] || '{}');
+  } catch { return {}; }
+}
+
+function saveNow(data) {
+  var saved = loadSaved();
+  for (var k in data) saved[k] = data[k];
+  localStorage[STORAGE_KEY] = JSON.stringify(saved);
+}
+
 var serverUrlEl = document.getElementById('serverUrl');
 var apiKeyEl = document.getElementById('apiKey');
 var urlEl = document.getElementById('url');
@@ -5,24 +19,14 @@ var sendBtn = document.getElementById('sendBtn');
 var sendTabBtn = document.getElementById('sendTabBtn');
 var statusEl = document.getElementById('status');
 
-var saveTimer = null;
-
-function saveSettings() {
-  chrome.storage.local.set({
-    serverUrl: serverUrlEl.value,
-    apiKey: apiKeyEl.value,
-  });
-}
-
 function onSettingChange() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveSettings, 500);
+  saveNow({ serverUrl: serverUrlEl.value, apiKey: apiKeyEl.value, url: urlEl.value });
   updateSendBtn();
 }
 
 serverUrlEl.addEventListener('input', onSettingChange);
 apiKeyEl.addEventListener('input', onSettingChange);
-urlEl.addEventListener('input', updateSendBtn);
+urlEl.addEventListener('input', onSettingChange);
 
 function updateSendBtn() {
   var disabled = !serverUrlEl.value || !apiKeyEl.value;
@@ -38,6 +42,8 @@ function setStatus(msg, isError) {
 async function doSend(url) {
   var serverUrl = serverUrlEl.value.replace(/\/+$/, '');
   var apiKey = apiKeyEl.value;
+
+  saveNow({ url: url });
 
   sendBtn.disabled = true;
   sendTabBtn.disabled = true;
@@ -88,8 +94,8 @@ sendBtn.addEventListener('click', function () {
   doSend(urlEl.value);
 });
 
-chrome.storage.local.get(['serverUrl', 'apiKey'], function (result) {
-  if (result.serverUrl) serverUrlEl.value = result.serverUrl;
-  if (result.apiKey) apiKeyEl.value = result.apiKey;
-  updateSendBtn();
-});
+var saved = loadSaved();
+if (saved.serverUrl) serverUrlEl.value = saved.serverUrl;
+if (saved.apiKey) apiKeyEl.value = saved.apiKey;
+if (saved.url) urlEl.value = saved.url;
+updateSendBtn();
